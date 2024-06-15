@@ -27,7 +27,7 @@ class MyApp extends StatelessWidget {
       home: Presentation(),
 
       theme: lightTheme,
-      darkTheme: darkTheme,
+      darkTheme: lightTheme, //Временно, пока темная тема не готова
 
       supportedLocales: L10n.allLocale,
       localizationsDelegates: const [

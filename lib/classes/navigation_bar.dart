@@ -3,10 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:museum/pages/home_page.dart';
+import 'package:museum/pages/statWeek.dart';
 
 import '../pages/floor_plan_page.dart';
 import '../pages/histories.dart';
 import '../pages/presentation.dart';
+import '../pages/rules.dart';
 import '../pages/statWeek.dart';
 import '../utils/badge_icon.dart';
 
@@ -76,7 +78,7 @@ class _CustomBottomNavigationBarState extends State<CustomBottomNavigationBar> {
       case 2:
         return StatWeek();
       case 3:
-        return Historie();
+        return Rules();
       default:
         return UnderDevelopmentPage();
     }

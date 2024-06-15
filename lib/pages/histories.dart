@@ -1,3 +1,4 @@
+import 'package:flutter/services.dart';
 import 'package:museum/pages/statWeek.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -16,6 +17,7 @@ class _HistorieState extends State<Historie>{
 
   Widget build(BuildContext context) {
     return Scaffold(
+
       body: Container(
         height: MediaQuery.of(context).size.height,
         width: MediaQuery.of(context).size.width,
@@ -68,7 +70,7 @@ class _HistorieState extends State<Historie>{
           Container(
               margin: EdgeInsets.symmetric(vertical: 15,horizontal: 10),
               child:
-          TextButton(onPressed: (){Navigator.push(context, MaterialPageRoute(builder: (context) => StatWeek()));},
+          TextButton(onPressed: (){SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual, overlays: [SystemUiOverlay.bottom, SystemUiOverlay.top]);},
               child: Text('Продолжить',
                 style: TextStyle(
                   fontSize: 16,

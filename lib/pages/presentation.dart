@@ -123,13 +123,14 @@ final List<String> description = ["Погружение в историю гор
         mainAxisAlignment: MainAxisAlignment.center,
 
         children: [
-        Container(
-          margin: EdgeInsets.symmetric(vertical: 16, horizontal: 24),
-          width: 350,
-          height: 150,
+          SizedBox(height: 35,),
+          Container(
+            margin: EdgeInsets.symmetric(vertical: 16, horizontal: 24),
+            width: 350,
+            height: 150,
 
 
-          child: Row(children: [
+            child: Row(children: [
             Container(
               height: 150,
               width: 120,

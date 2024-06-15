@@ -36,11 +36,12 @@ class _FloorPlanPageState extends State<FloorPlanPage> {
           return isPortrait ? Column(
             children: [
               Padding(
-                padding: const EdgeInsets.all(20.0),
+                padding: const EdgeInsets.only(left: 20, right: 20, top: 50),
                 child: Align(
                   alignment: Alignment.centerRight,
                   child: Column(
-                    children: List.generate(_floorPlans.length, (index) {
+                    children:
+                    List.generate(_floorPlans.length, (index) {
                       int reverseIndex = _floorPlans.length - 1 - index;
                       return Padding(
                         padding: const EdgeInsets.symmetric(vertical: 5.0),
