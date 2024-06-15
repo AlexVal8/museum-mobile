@@ -24,10 +24,10 @@ class MyApp extends StatelessWidget {
     Locale locale = isSupportedLanguage ? const Locale('ru') : const Locale('en');
     return MaterialApp(
       title: 'Музеум',
-      home: CustomBottomNavigationBar(),
+      home: Presentation(),
 
       theme: lightTheme,
-      darkTheme: darkTheme,
+      darkTheme: lightTheme, //Временно, пока темная тема не готова
 
       supportedLocales: L10n.allLocale,
       localizationsDelegates: const [

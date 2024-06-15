@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 import '../utils/carousel.dart';
 import '../utils/text_field.dart';
@@ -102,11 +103,11 @@ class _HomePageState extends State<HomePage> {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            SizedBox(height: 16),
+            SizedBox(height: 60),
             Container(
               margin: EdgeInsets.only(left: 22),
               alignment: Alignment.centerLeft,
-              child: Image.asset("assets/icons/main_logo.png"),
+              child: SvgPicture.asset("assets/icons/logo_vector.svg",width: 210,),
             ),
             SizedBox(height: 16),
             if (_isSearching != true)

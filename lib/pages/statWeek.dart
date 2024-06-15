@@ -51,6 +51,7 @@ class _StatWeekState extends State<StatWeek> {
 
 
   Widget build(BuildContext context) {
+
     var topMenu = List.generate(4, (index) =>  TextButton(
       onPressed: (){
         setState(() {
@@ -116,20 +117,20 @@ class _StatWeekState extends State<StatWeek> {
       decoration: BoxDecoration(color: disableBox, borderRadius: BorderRadius.circular(10)),
     child: Text('Выбрать Мероприятие'),)
       ],),
-      SizedBox(height: 27 ,),
+      SizedBox(height: 10 ,),
       Container(child: LineChart(lineChartData) ,
       color: graphBox,
-      height: 170, width: 350,),
-      SizedBox(height: 15,),
+      height: 165, width: 350,),
+      SizedBox(height: 10,),
       Container(child: BarChart(barChartData),
       color: graphBox,
-      height: 170,
+      height: 165,
       width: 350,) ,
-      SizedBox(height: 15,),
+      SizedBox(height: 10,),
       Container(
         padding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
         color: graphBox,
-          height: 200,
+          height: 185,
         width: 350,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,

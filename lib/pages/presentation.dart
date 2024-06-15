@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
+import '../classes/navigation_bar.dart';
 import 'histories.dart';
 
 class Triple<T1, T2, T3, T4> {
@@ -88,13 +89,14 @@ final List<String> description = ["Погружение в историю гор
         mainAxisAlignment: MainAxisAlignment.center,
 
         children: [
-        Container(
-          margin: EdgeInsets.symmetric(vertical: 16, horizontal: 24),
-          width: 350,
-          height: 150,
+          SizedBox(height: 35,),
+          Container(
+            margin: EdgeInsets.symmetric(vertical: 16, horizontal: 24),
+            width: 350,
+            height: 150,
 
 
-          child: Row(children: [
+            child: Row(children: [
             Container(
               height: 150,
               width: 120,
@@ -145,7 +147,7 @@ final List<String> description = ["Погружение в историю гор
         margin: EdgeInsets.all(16),
         decoration: BoxDecoration(borderRadius: BorderRadius.all(Radius.circular(15))),
         child:
-      TextButton(onPressed: (){Navigator.push(context, MaterialPageRoute(builder: (context) => Historie()));},
+      TextButton(onPressed: (){Navigator.push(context, MaterialPageRoute(builder: (context) => CustomBottomNavigationBar()));},
       style: TextButton.styleFrom(backgroundColor: counter == 0?disableButton:enableButton,
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15))),
         child: Text(counter == 0?"Позже" :"Сохранить выбор", style: TextStyle(color: Colors.white),),
