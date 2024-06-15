@@ -7,6 +7,7 @@ import 'package:museum/pages/home_page.dart';
 import '../pages/floor_plan_page.dart';
 import '../pages/histories.dart';
 import '../pages/presentation.dart';
+import '../pages/statWeek.dart';
 import '../utils/badge_icon.dart';
 
 class CustomBottomNavigationBar extends StatefulWidget {
@@ -73,9 +74,9 @@ class _CustomBottomNavigationBarState extends State<CustomBottomNavigationBar> {
       case 1:
         return FloorPlanPage();
       case 2:
-        return Historie();
+        return StatWeek();
       case 3:
-        return UnderDevelopmentPage();
+        return Historie();
       default:
         return UnderDevelopmentPage();
     }
