@@ -71,11 +71,27 @@ class _CustomBottomNavigationBarState extends State<CustomBottomNavigationBar> {
       case 1:
         return FloorPlanPage();
       case 2:
-        return HomePage();
+        return UnderDevelopmentPage();
       case 3:
-        return HomePage();
+        return UnderDevelopmentPage();
       default:
-        return HomePage();
+        return UnderDevelopmentPage();
     }
+  }
+}
+class UnderDevelopmentPage extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('В разработке'),
+      ),
+      body: Center(
+        child: Text(
+          'Эта страница находится в разработке.',
+          style: TextStyle(fontSize: 20),
+        ),
+      ),
+    );
   }
 }
