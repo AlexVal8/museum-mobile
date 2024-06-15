@@ -1,8 +1,14 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
+import '../classes/navigation_bar.dart';
 import 'histories.dart';
+import 'home_page.dart';
+import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Triple<T1, T2, T3, T4> {
   T1 a;
@@ -27,6 +33,35 @@ class _PresentationState extends State<Presentation> {
   Color textColor = const Color(0xFF4B635A);
   Color lightTextColor = const Color(0xFFFFFFFF);
   Color enableButton = const Color(0xFF156B55);
+
+
+
+
+  Future<void> _sendRequest() async {
+    final String email = "string@string.ru";
+    final String password = "stringing";
+    final url = Uri.parse('http://217.119.129.70:8080/public/api/login');
+    final headers = {"Content-Type": "application/json"};
+    final body = jsonEncode({"email": email, "password": password});
+
+    try {
+      final response = await http.post(url, headers: headers, body: body);
+      if (response.statusCode == 200) {
+        print('Успешный ответ: ${response.body}');
+        final responseData = jsonDecode(response.body);
+        final refresh_token = responseData['refresh_token'];
+        final access_token = responseData['access_token'];
+
+        SharedPreferences prefs = await SharedPreferences.getInstance();
+        await prefs.setString('access_token', access_token);
+        await prefs.setString('refresh_token', refresh_token);
+      } else {
+        print('Ошибка: ${response.statusCode}');
+      }
+    } catch (error) {
+      print('Ошибка при выполнении запроса: $error');
+    }
+  }
 
   
 final List<String> text = ["Экскурсии", "Мастер-классы", "Спектакли", "Выставки", "Интерактивные занятия", "Концерты", "Лекции", "Мероприятия по генеалогии", "Творческие встречи", "Фестивали", "Артист-токи", "Кинопоказы", "Персонализация"];
@@ -145,7 +180,10 @@ final List<String> description = ["Погружение в историю гор
         margin: EdgeInsets.all(16),
         decoration: BoxDecoration(borderRadius: BorderRadius.all(Radius.circular(15))),
         child:
-      TextButton(onPressed: (){Navigator.push(context, MaterialPageRoute(builder: (context) => Historie()));},
+      TextButton(onPressed: () async
+      {
+        await _sendRequest();
+        Navigator.push(context, MaterialPageRoute(builder: (context) => CustomBottomNavigationBar()));},
       style: TextButton.styleFrom(backgroundColor: counter == 0?disableButton:enableButton,
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15))),
         child: Text(counter == 0?"Позже" :"Сохранить выбор", style: TextStyle(color: Colors.white),),

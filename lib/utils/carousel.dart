@@ -9,7 +9,8 @@ class CarouselWidget extends StatelessWidget {
     Key? key,
     required this.items,
     required this.title,
-    required this.name}) : super(key: key);
+    required this.name,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -32,55 +33,55 @@ class CarouselWidget extends StatelessWidget {
           ),
         ),
         Expanded(
-          child: Container(
-            child: Padding(
-              padding: EdgeInsets.only(left: 32, right: 32-8, top: 24, bottom: 24),
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(30),
-                child: ListView.builder(
-                  scrollDirection: Axis.horizontal,
-                  itemCount: items.length,
-                  itemBuilder: (context, index) {
-                    return Padding(
-                      padding: EdgeInsets.only(right: 8),
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(30),
-                        child: Stack(
-                          children: [
-                            Container(
-                              width: 150,
-                              height: double.infinity,
-                              child: FittedBox(
-                                child: items[index],
-                                fit: BoxFit.cover,
-                              ),
-                            ),
-                            Positioned(
-                              bottom: 0,
-                              left: 0,
-                              right: 0,
-                              child: Container(
-                                color: Colors.black.withOpacity(0.5),
-                                padding: EdgeInsets.all(8),
-                                child: Text(
-                                  name[index]!,
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 15,
+            child: Container(
+              child: Padding(
+                padding: EdgeInsets.only(left: 32, right: 24, top: 24, bottom: 24),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(30),
+                  child: ListView.builder(
+                    scrollDirection: Axis.horizontal,
+                    itemCount: items.length,
+                    itemBuilder: (context, index) {
+                      return Padding(
+                        padding: EdgeInsets.only(right: 8),
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(30),
+                          child: Stack(
+                              children: [
+                                Container(
+                                  width: 150,
+                                  height: double.infinity,
+                                  child: FittedBox(
+                                    child: items[index],
+                                    fit: BoxFit.cover,
                                   ),
-                                  textAlign: TextAlign.center,
                                 ),
-                              ),
-                            )
-                          ]
+                                Positioned(
+                                  bottom: 0,
+                                  left: 0,
+                                  right: 0,
+                                  child: Container(
+                                    color: Colors.black.withOpacity(0.5),
+                                    padding: EdgeInsets.all(8),
+                                    child: Text(
+                                      name[index] ?? '',
+                                      style: TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 15,
+                                      ),
+                                      textAlign: TextAlign.center,
+                                    ),
+                                  ),
+                                )
+                              ]
+                          ),
                         ),
-                      ),
-                    );
-                  },
+                      );
+                    },
+                  ),
                 ),
               ),
-            ),
-          )
+            )
         ),
       ],
     );
