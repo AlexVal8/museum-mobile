@@ -55,7 +55,7 @@ class _FloorPlanPageState extends State<FloorPlanPage> {
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(15),
                             ),
-                            primary: Colors.white, // Text color
+                          //  primary: Colors.white, // Text color
                           ),
                           child: Container(
                             width: 64 - 15,
@@ -129,7 +129,7 @@ class _FloorPlanPageState extends State<FloorPlanPage> {
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(15),
                             ),
-                            primary: Colors.white, // Text color
+                         //   primary: Colors.white, // Text color
                           ),
                           child: Container(
                             width: 64 - 15,

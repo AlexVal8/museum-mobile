@@ -242,7 +242,7 @@ class _EventPageState extends State<EventPage> {
                     if (widget.url != null)
                       TextButton(
                         style: ElevatedButton.styleFrom(
-                          primary: Color(0xff156B55),
+                         // primary: Color(0xff156B55),
                           minimumSize: Size(343, 49),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(15),
@@ -264,7 +264,7 @@ class _EventPageState extends State<EventPage> {
                     if (widget.url != null)
                       TextButton(
                         style: ElevatedButton.styleFrom(
-                          primary: Color(0xff6B2415),
+                        //  primary: Color(0xff6B2415),
                           minimumSize: Size(343, 49),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(15),

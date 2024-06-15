@@ -5,6 +5,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:museum/pages/home_page.dart';
 
 import '../pages/floor_plan_page.dart';
+import '../pages/presentation.dart';
 import '../utils/badge_icon.dart';
 
 class CustomBottomNavigationBar extends StatefulWidget {
@@ -71,7 +72,7 @@ class _CustomBottomNavigationBarState extends State<CustomBottomNavigationBar> {
       case 1:
         return FloorPlanPage();
       case 2:
-        return UnderDevelopmentPage();
+        return Presentation();
       case 3:
         return UnderDevelopmentPage();
       default:
