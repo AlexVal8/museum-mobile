@@ -38,7 +38,7 @@ class _CustomBottomNavigationBarState extends State<CustomBottomNavigationBar> {
             top: Radius.circular(30),
           ),
           child: BottomNavigationBar(
-            backgroundColor: Color(0xffF3EDF7),
+            backgroundColor: Color(0xffD5E2D5),
             currentIndex: _currentIndex,
             onTap: (index) {
               setState(() {
@@ -55,52 +55,52 @@ class _CustomBottomNavigationBarState extends State<CustomBottomNavigationBar> {
               BottomNavigationBarItem(
                 icon: SvgPicture.asset(
                   'assets/images/main.svg',
-                  width: 40,
-                  height: 40,
+                  width: 32,
+                  height: 32,
                 ),
                 activeIcon: SvgPicture.asset(
                   'assets/images/main_select.svg',
-                  width: 40,
-                  height: 40,
+                  width: 32,
+                  height: 32,
                 ),
                 label: 'главная',
               ),
               BottomNavigationBarItem(
                 icon: SvgPicture.asset(
                   'assets/images/map.svg',
-                  width: 40,
-                  height: 40,
+                  width: 32,
+                  height: 32,
                 ),
                 activeIcon: SvgPicture.asset(
                   'assets/images/map_select.svg',
-                  width: 40,
-                  height: 40,
+                  width: 32,
+                  height: 32,
                 ),
                 label: 'карта',
               ),
               BottomNavigationBarItem(
                 icon: SvgPicture.asset(
                   'assets/images/stat.svg',
-                  width: 40,
-                  height: 40,
+                  width: 32,
+                  height: 32,
                 ),
                 activeIcon: SvgPicture.asset(
                   'assets/images/stat_select.svg',
-                  width: 40,
-                  height: 40,
+                  width: 32,
+                  height: 32,
                 ),
                 label: 'статистика',
               ),
               BottomNavigationBarItem(
                 icon: SvgPicture.asset(
                   'assets/images/rules.svg',
-                  width: 40,
-                  height: 40,
+                  width: 32,
+                  height: 32,
                 ),
                 activeIcon: SvgPicture.asset(
                   'assets/images/rules_select.svg',
-                  width: 40,
-                  height: 40,
+                  width: 32,
+                  height: 32,
                 ),
                 label: 'правила',
               ),

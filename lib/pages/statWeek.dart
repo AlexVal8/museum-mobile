@@ -70,7 +70,7 @@ class _StatWeekState extends State<StatWeek> {
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10))), ), );
     return Scaffold(
       appBar: PreferredSize(
-          preferredSize: Size.fromHeight(65),
+          preferredSize: Size.fromHeight(90),
           child: Column(children: [SizedBox(height: 58,),
           Container(
         width: 352,
@@ -91,58 +91,60 @@ class _StatWeekState extends State<StatWeek> {
 
       ],),)],)
     ),
-    body: Column(children: [
-      Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-        Container(
-          alignment: Alignment.center,
-          height: 50,
-          width: 172,
-          decoration: BoxDecoration(color: disableBox, borderRadius: BorderRadius.circular(10)),
-        child:
-        Column(
+    body: SingleChildScrollView(
+      child: Column(children: [
+        Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-          Text('Выберите период'),
-          Text('11.05.2024 - 17.05.2024')
-        ],
-        ),
-        ),
-    SizedBox(width: 9,),
-    Container(
-      alignment: Alignment.center,
-      height: 50 ,
-      width: 166,
-      decoration: BoxDecoration(color: disableBox, borderRadius: BorderRadius.circular(10)),
-    child: Text('Выбрать Мероприятие'),)
-      ],),
-      SizedBox(height: 10 ,),
-      Container(child: LineChart(lineChartData) ,
-      color: graphBox,
-      height: 165, width: 350,),
-      SizedBox(height: 10,),
-      Container(child: BarChart(barChartData),
-      color: graphBox,
-      height: 165,
-      width: 350,) ,
-      SizedBox(height: 10,),
+          Container(
+            alignment: Alignment.center,
+            height: 50,
+            width: 172,
+            decoration: BoxDecoration(color: disableBox, borderRadius: BorderRadius.circular(10)),
+          child:
+          Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+            Text('Выберите период'),
+            Text('11.05.2024 - 17.05.2024')
+          ],
+          ),
+          ),
+      SizedBox(width: 9,),
       Container(
-        padding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+        alignment: Alignment.center,
+        height: 50 ,
+        width: 166,
+        decoration: BoxDecoration(color: disableBox, borderRadius: BorderRadius.circular(10)),
+      child: Text('Выбрать Мероприятие'),)
+        ],),
+        SizedBox(height: 10 ,),
+        Container(child: LineChart(lineChartData) ,
         color: graphBox,
-          height: 185,
-        width: 350,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-        Text('Статистика', style: TextStyle(fontSize: 20, fontWeight: FontWeight.w500),),
-        Text('Оплата по Пушкинской карте = 25\nОплата наличкой = 17\nОплата картой = 57\nБесплатно пенсионерам = 3\nПосетило = 280\nЗабронированно = 43\nВсего посетителей = 99', style: TextStyle(fontWeight: FontWeight.w500),)
+        height: 165, width: 350,),
+        SizedBox(height: 10,),
+        Container(child: BarChart(barChartData),
+        color: graphBox,
+        height: 165,
+        width: 350,) ,
+        SizedBox(height: 10,),
+        Container(
+          padding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+          color: graphBox,
+            height: 185,
+          width: 350,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+          Text('Статистика', style: TextStyle(fontSize: 20, fontWeight: FontWeight.w500),),
+          Text('Оплата по Пушкинской карте = 25\nОплата наличкой = 17\nОплата картой = 57\nБесплатно пенсионерам = 3\nПосетило = 280\nЗабронированно = 43\nВсего посетителей = 99', style: TextStyle(fontWeight: FontWeight.w500),)
+        ],),
+        )
+      
+      
+      
       ],),
-      )
-
-
-
-    ],),
+    ),
     );
   }
 }
