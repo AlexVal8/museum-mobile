@@ -37,22 +37,72 @@ class _CustomBottomNavigationBarState extends State<CustomBottomNavigationBar> {
           borderRadius: const BorderRadius.vertical(
             top: Radius.circular(30),
           ),
-          child: NavigationBar(
+          child: BottomNavigationBar(
             backgroundColor: Color(0xffF3EDF7),
-            selectedIndex: _currentIndex,
-            indicatorColor: Color(0xffE8DEF8),
-            onDestinationSelected: (index) {
+            currentIndex: _currentIndex,
+            onTap: (index) {
               setState(() {
                 _currentIndex = index;
               });
             },
-            destinations: [
-              NavigationDestination(icon: Icon(Icons.circle, size: 15, color: Color(0xff1D192B)), label: 'Label'),
-              NavigationDestination(icon: Icon(Icons.circle, size: 15, color: Color(0xff49454F)), label: 'Label'),
-              NavigationDestination(icon: Icon(Icons.circle, size: 15, color: Color(0xff49454F)), label: 'Label'),
-              NavigationDestination(
-                icon: BadgeIcon(),
-                label: 'Label',
+            selectedItemColor: Color(0xff156B55),
+            unselectedItemColor: Color(0xff9B9B9B),
+            selectedLabelStyle: TextStyle(color: Color(0xff156B55), fontSize: 12, fontFamily: 'Roboto', fontWeight: FontWeight.w600),
+            unselectedLabelStyle: TextStyle(color: Color(0xff9B9B9B), fontSize: 12, fontFamily: 'Roboto', fontWeight: FontWeight.w600),
+
+            type: BottomNavigationBarType.fixed,
+            items: [
+              BottomNavigationBarItem(
+                icon: SvgPicture.asset(
+                  'assets/images/main.svg',
+                  width: 40,
+                  height: 40,
+                ),
+                activeIcon: SvgPicture.asset(
+                  'assets/images/main_select.svg',
+                  width: 40,
+                  height: 40,
+                ),
+                label: 'главная',
+              ),
+              BottomNavigationBarItem(
+                icon: SvgPicture.asset(
+                  'assets/images/map.svg',
+                  width: 40,
+                  height: 40,
+                ),
+                activeIcon: SvgPicture.asset(
+                  'assets/images/map_select.svg',
+                  width: 40,
+                  height: 40,
+                ),
+                label: 'карта',
+              ),
+              BottomNavigationBarItem(
+                icon: SvgPicture.asset(
+                  'assets/images/stat.svg',
+                  width: 40,
+                  height: 40,
+                ),
+                activeIcon: SvgPicture.asset(
+                  'assets/images/stat_select.svg',
+                  width: 40,
+                  height: 40,
+                ),
+                label: 'статистика',
+              ),
+              BottomNavigationBarItem(
+                icon: SvgPicture.asset(
+                  'assets/images/rules.svg',
+                  width: 40,
+                  height: 40,
+                ),
+                activeIcon: SvgPicture.asset(
+                  'assets/images/rules_select.svg',
+                  width: 40,
+                  height: 40,
+                ),
+                label: 'правила',
               ),
             ],
           ),
