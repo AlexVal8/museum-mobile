@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:museum/controllers/login_controller.dart';
 
 import '../utils/carousel.dart';
 import '../utils/text_field.dart';
@@ -15,6 +16,8 @@ class _HomePageState extends State<HomePage> {
   TextEditingController _searchController = TextEditingController();
   bool _isSearching = false;
   List<Map<String, dynamic>> _filteredPoster = [];
+
+  final AuthService authService = AuthService();
 
   // Списки мероприятий и их описания
   final List<Map<String, dynamic>> _demoPoster = [
@@ -104,10 +107,21 @@ class _HomePageState extends State<HomePage> {
         child: Column(
           children: [
             SizedBox(height: 60),
-            Container(
-              margin: EdgeInsets.only(left: 22),
-              alignment: Alignment.centerLeft,
-              child: SvgPicture.asset("assets/icons/logo_vector.svg",width: 210,),
+            Row(
+              children: [
+                Container(
+                  margin: EdgeInsets.only(left: 22),
+                  alignment: Alignment.centerLeft,
+                  child: SvgPicture.asset("assets/icons/logo_vector.svg",width: 210,),
+                ),
+                Spacer(),
+                IconButton(
+                  padding: EdgeInsets.only(right: 30),
+                  icon: Icon(Icons.logout, size: 40,),
+                  alignment: Alignment.centerRight,
+                  onPressed: () { authService.logoutUser(context); },
+                )
+              ],
             ),
             SizedBox(height: 16),
             if (_isSearching != true)
