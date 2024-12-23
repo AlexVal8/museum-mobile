@@ -1,8 +1,10 @@
+import 'package:museum/pages/login_register_page.dart';
 import 'package:museum/pages/presentation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:museum/pages/home_page.dart';
+import 'package:museum/pages/register_page.dart';
 import 'package:museum/theme/dark_theme.dart';
 import 'package:museum/theme/light_theme.dart';
 import 'classes/navigation_bar.dart';
@@ -16,7 +18,6 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     Locale systemLocale = WidgetsBinding.instance!.window.locale;
@@ -24,7 +25,7 @@ class MyApp extends StatelessWidget {
     Locale locale = isSupportedLanguage ? const Locale('ru') : const Locale('en');
     return MaterialApp(
       title: 'Музеум',
-      home: Presentation(),
+      home: LoginRegisterPage(),
 
       theme: lightTheme,
       darkTheme: lightTheme, //Временно, пока темная тема не готова
