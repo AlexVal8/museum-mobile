@@ -4,7 +4,6 @@ import 'dart:typed_data';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:intl/intl.dart';
 import 'package:museum/controllers/login_controller.dart';
@@ -43,7 +42,7 @@ class _HomePageState extends State<HomePage> {
 
   String formatDate(String dateStr) {
     DateTime dateTime = DateTime.parse(dateStr);
-    String formattedDate = DateFormat("d MMMM HH:mm", 'ru').format(dateTime);
+    String formattedDate = DateFormat("dd-MM-yyyy HH:mm", 'ru').format(dateTime);
     return formattedDate;
   }
 
@@ -292,7 +291,7 @@ class _HomePageState extends State<HomePage> {
                                 );
                               } else {
                                 return Text(
-                                  event['name'] ?? 'Название не указано',
+                                  event['name'],
                                   style: TextStyle(
                                     fontSize: 18,
                                     fontWeight: FontWeight.bold,
@@ -309,12 +308,9 @@ class _HomePageState extends State<HomePage> {
                 );
               },
             ),
-          )
-
+          ),
         ],
       ),
     );
   }
 }
-
-
