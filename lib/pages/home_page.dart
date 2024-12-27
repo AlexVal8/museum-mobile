@@ -41,7 +41,7 @@ class _HomePageState extends State<HomePage> {
   }
 
   String formatDate(String dateStr) {
-    DateTime dateTime = DateTime.parse(dateStr);
+    DateTime dateTime = DateFormat("dd-MM-yyyy HH:mm", 'ru').parse(dateStr);
     String formattedDate = DateFormat("dd-MM-yyyy HH:mm", 'ru').format(dateTime);
     return formattedDate;
   }
