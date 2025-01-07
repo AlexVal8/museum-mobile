@@ -7,11 +7,14 @@ import 'package:museum/pages/home_page.dart';
 import 'package:museum/pages/register_page.dart';
 import 'package:museum/theme/dark_theme.dart';
 import 'package:museum/theme/light_theme.dart';
+import 'package:museum/utils/service_locator.dart';
 import 'classes/navigation_bar.dart';
 import 'l10n/l10n.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
  void main() {
+   setupServiceLocator();
+
   runApp(const MyApp());
 }
 
