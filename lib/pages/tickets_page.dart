@@ -14,11 +14,10 @@ class _TicketsPageState extends State<TicketsPage>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // Цвет фона всего экрана (примерно под макет)
       backgroundColor: const Color(0xFFF5FBF6),
       appBar: AppBar(
-        automaticallyImplyLeading: false, // убираем кнопку назад
-        elevation: 0,                    // убираем разделительную полосу
+        automaticallyImplyLeading: false,
+        elevation: 0,
         backgroundColor: const Color(0xFFF5FBF6),
         centerTitle: true,
         title: const Text(
@@ -47,17 +46,17 @@ class _TicketsPageState extends State<TicketsPage>
     );
   }
 
-  /// Виджет со «сложной» овальной подложкой, внутри которой две кнопки.
+  /// Виджет с овальной подложкой, внутри которой две кнопки.
   Widget _buildTabSelector() {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16),
       child: Container(
         padding: const EdgeInsets.all(4),
         decoration: BoxDecoration(
-          color: Color(0xFFD9D9D9),             // цвет «овала»
+          color: const Color(0xFFD9D9D9),
           borderRadius: BorderRadius.circular(15),
         ),
-        // Делаем две вкладки одинаковой ширины
+
         child: Row(
           children: [
             Expanded(child: _buildTabButton(index: 0, text: 'Активные')),
@@ -93,7 +92,6 @@ class _TicketsPageState extends State<TicketsPage>
               fontSize: 16,
               color: isSelected ? Colors.black : Colors.grey,
               fontWeight: isSelected ? FontWeight.w600 : FontWeight.normal,
-
             ),
           ),
         )
@@ -150,7 +148,6 @@ class _EventCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      // Цвет карточки – ориентируемся на макет
       decoration: BoxDecoration(
         color: Color(0x2B156B55),
         borderRadius: BorderRadius.circular(12),
@@ -171,7 +168,6 @@ class _EventCard extends StatelessWidget {
             ),
           ),
           const SizedBox(width: 12),
-          // Текст
           Expanded(
             child: Padding(
               padding: const EdgeInsets.symmetric(vertical: 12),

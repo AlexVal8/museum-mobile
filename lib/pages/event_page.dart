@@ -77,13 +77,11 @@ class _EventPageState extends State<EventPage> {
 
       final result = await _fetchEvent(token, widget.event["id"]);
       if (result == null) {
-        // Не удалось загрузить событие
         setState(() {
           _errorMessage = 'Не удалось получить данные о событии';
           _isLoading = false;
         });
       } else {
-        // Успешно
         setState(() {
           event = result;
           _isLoading = false;
@@ -104,15 +102,12 @@ class _EventPageState extends State<EventPage> {
         final eventData = await eventsService.fetchEventById(token, eventId);
 
         if (eventData != null) {
-          // Загружаем сайт
           final siteData = await siteService.getSite(token, eventData['siteId']);
-          // Загружаем тип мероприятия
           final typeOfEventData = await typeOfEventService.getTypeOfEvent(
             token,
             eventData['typeOfEventId'],
           );
 
-          // Загружаем изображения (список ссылок)
           final rawLinks = eventData['images'] as List<dynamic>? ?? [];
           final List<String> imageLinks =
           rawLinks.map((image) => image['link'] as String).toList();
@@ -127,13 +122,12 @@ class _EventPageState extends State<EventPage> {
           return eventData;
         }
       } catch (e) {
-        // Можно логировать ошибку
         print("Failed to fetch event $eventId, attempt ${i + 1}, error: $e");
-        // Задержка перед повтором
+
         await Future.delayed(const Duration(seconds: 2));
       }
     }
-    // Все попытки провалились
+
     return null;
   }
 
@@ -141,15 +135,12 @@ class _EventPageState extends State<EventPage> {
   Future<List<Uint8List?>> _fetchEventImages(String token, List<String> links) async {
     final futures = <Future<Uint8List?>>[];
 
-    // Предполагаем, что link = "/api/images/123"
-    // Надо выдрать "123" из ссылки и передать
     for (String link in links) {
-      // Делим по / и берём последний элемент
       final id = link.split('/').last;
       futures.add(eventsService.fetchEventImage("Bearer $token", id));
     }
 
-    return Future.wait(futures); // дождёмся всех запросов
+    return Future.wait(futures);
   }
 
   /// Изменение состояния лайка
@@ -162,21 +153,19 @@ class _EventPageState extends State<EventPage> {
   /// Форматировать дату
   String formatDate(String dateStr) {
     final format = DateFormat("dd-MM-yyyy HH:mm");
-    // Подстройте этот код, если формат вашей даты отличается
+
     final dateTime = format.parse(dateStr);
     return DateFormat("d MMMM, HH:mm", 'ru').format(dateTime);
   }
 
   /// Виджет карусели
   Widget _buildCarousel() {
-    // Если нет изображений — заглушка
     if (images.isEmpty) {
       return Container(
         color: Colors.grey[200],
         child: const Center(child: Text('Нет изображений')),
       );
     } else {
-      // Убираем жесткое height, т.к. внешний Positioned задаёт высоту
       return Stack(
         children: [
           PageView(
@@ -195,7 +184,6 @@ class _EventPageState extends State<EventPage> {
               );
             }).toList(),
           ),
-          // Индикатор (снизу или где вам удобнее)
           Positioned(
             bottom: 40,
             left: 0,
@@ -216,13 +204,6 @@ class _EventPageState extends State<EventPage> {
 
   /// Нажатие на "Купить билет"
   void _onBuyTicket() {
-    // Здесь решаем, что для купленного билета:
-    //   isPaid = true
-    //   isBookedFirstStep = false
-    //   isVisibleButton = false (если не нужно показывать кнопку)
-    // или true — зависит от вашей логики.
-    // Передаём прочие данные о событии (название, дату, картинку и т.д.)
-
     if (event == null) return;
 
     final eventData = event!;
@@ -232,7 +213,6 @@ class _EventPageState extends State<EventPage> {
     final siteAddress = site?['address'] ?? '';
     final siteText = '$siteName\n$siteAddress';
 
-    // Для примера берём первую картинку (если есть)
     Uint8List? firstImage = images.isNotEmpty ? images.first : null;
 
     Navigator.push(
@@ -241,12 +221,11 @@ class _EventPageState extends State<EventPage> {
         builder: (context) => TicketPage(
           performanceTitle: eventName,
           dateTimePlace: '$dateText\n$siteText',
-          ticketNumber: '${eventData["id"].hashCode}', // к примеру
+          ticketNumber: '${eventData["id"].hashCode}',
           isPaid: true,
           isBookedFirstStep: false,
-          isVisibleButton: true, // при купленном билете можно скрыть
-          countHours: 48,         // если нужно
-          // передадим картинку (если нет — в TicketPage показывается заглушка)
+          isVisibleButton: true,
+          countHours: 48,
           performanceImageWidget: (firstImage != null)
               ? Image.memory(
             firstImage,
@@ -262,12 +241,6 @@ class _EventPageState extends State<EventPage> {
 
   /// Нажатие на "Забронировать"
   void _onReserveTicket() {
-    // Условия:
-    //   isBookedFirstStep = true
-    //   isPaid = false
-    //   isVisibleButton = true
-    // Передаём прочие данные о событии.
-
     if (event == null) return;
 
     final eventData = event!;
@@ -305,14 +278,12 @@ class _EventPageState extends State<EventPage> {
 
   @override
   Widget build(BuildContext context) {
-    // Если ещё грузим данные
     if (_isLoading) {
       return const Scaffold(
         body: Center(child: CircularProgressIndicator()),
       );
     }
 
-    // Если есть ошибка
     if (_errorMessage != null) {
       return Scaffold(
         appBar: AppBar(
@@ -323,9 +294,6 @@ class _EventPageState extends State<EventPage> {
       );
     }
 
-    // Здесь мы уже знаем, что _isLoading = false, и нет _errorMessage.
-    // Но всё ещё возможно, что event = null (если хоть как-то что-то пошло не так).
-    // На всякий случай проверим:
     if (event == null) {
       return Scaffold(
         appBar: AppBar(
@@ -336,7 +304,7 @@ class _EventPageState extends State<EventPage> {
       );
     }
 
-    // Достаём поля
+    // Мероприятие
     final eventData = event!;
     final eventName = eventData['name'] ?? 'Название не указано';
 
@@ -363,42 +331,39 @@ class _EventPageState extends State<EventPage> {
       priceText = 'Стоимость: ${prices.first['price']} руб.';
     }
 
-    // Сайт (площадка) и адрес
+    // Площадка и адрес
     String siteText = 'Площадка не указана';
     if (site != null && site!['name'] != null && site!['address'] != null) {
       siteText = '${site!['name']}\n${site!['address']}';
     }
 
-    // ------------------------ Высоты для макета ------------------------
     // Высота экрана
     final screenHeight = MediaQuery.of(context).size.height;
-    // 1/3 экрана отдаем под карусель
+    // 1/3 под карусель
     final double carouselHeight = screenHeight / 3;
-    // Сколько хотим «наплыва»? Пусть совпадает со скруглением
     const double cornerRadius = 24;
-    // Верхний отступ карточки на (1/3 высоты - 24 пикселя)
+    // Верхний отступ карточки
     final double cardTop = carouselHeight - cornerRadius;
 
     return Scaffold(
       body: Stack(
-        fit: StackFit.expand, // Stack займет весь экран
+        fit: StackFit.expand,
         children: [
-          // ------------------- Карусель на верхней 1/3 экрана -------------------
+          // Карусель
           Positioned(
             top: 0,
             left: 0,
             right: 0,
-            height: carouselHeight, // фиксируем ровно 1/3 высоты
+            height: carouselHeight,
             child: _buildCarousel(),
           ),
 
-          // ------------------- Белая карточка на нижние 2/3 -------------------
+          // Белая карточка
           Positioned(
-            // Начинается чуть выше (на cornerRadius пикселей), чтобы был «наплыв»
             top: cardTop,
             left: 0,
             right: 0,
-            bottom: 0, // тянется до самого низа
+            bottom: 0,
             child: Container(
               decoration: const BoxDecoration(
                 color: Color(0xFFF5FBF6),
@@ -412,7 +377,7 @@ class _EventPageState extends State<EventPage> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    // ---------- Заголовок + лайк ----------
+                    // Заголовок
                     Row(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
@@ -429,7 +394,7 @@ class _EventPageState extends State<EventPage> {
                     ),
                     const SizedBox(height: 16),
 
-                    // Жанр и возраст
+                    // Жанр, возраст и лайк
                     Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -521,7 +486,7 @@ class _EventPageState extends State<EventPage> {
                     ),
                     const SizedBox(height: 8),
 
-                    // Можно место/дату и т.д.
+                    // Описание
                     Text(
                       description,
                       style: const TextStyle(fontSize: 20, height: 1.2),
@@ -537,19 +502,19 @@ class _EventPageState extends State<EventPage> {
                             text: const TextSpan(
                               children: [
                                 TextSpan(
-                                  text: 'Телефон: ', // Жирный текст
+                                  text: 'Телефон: ',
                                   style: TextStyle(
                                     fontSize: 20,
-                                    fontWeight: FontWeight.bold, // Жирный вес
-                                    color: Colors.black, // Цвет текста
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.black,
                                   ),
                                 ),
                                 TextSpan(
-                                  text: '+7 950 000 00 00', // Обычный текст
+                                  text: '+7 950 000 00 00',
                                   style: TextStyle(
                                     fontSize: 20,
-                                    fontWeight: FontWeight.normal, // Нормальный вес
-                                    color: Colors.black, // Цвет текста
+                                    fontWeight: FontWeight.normal,
+                                    color: Colors.black,
                                   ),
                                 ),
                               ],
@@ -581,8 +546,8 @@ class _EventPageState extends State<EventPage> {
                           child: Column(
                             children: [
                               Container(
-                                width: double.infinity, // Растягивает кнопку на всю ширину
-                                height: 50, // Фиксированная высота
+                                width: double.infinity,
+                                height: 50,
                                 child: ElevatedButton(
                                   style: ElevatedButton.styleFrom(
                                     backgroundColor: Color(0xFF156B55),
@@ -595,10 +560,10 @@ class _EventPageState extends State<EventPage> {
                                   ),
                                 ),
                               ),
-                              const SizedBox(height: 16), // Вертикальный отступ между кнопками
+                              const SizedBox(height: 16),
                               Container(
-                                width: double.infinity, // Растягивает кнопку на всю ширину
-                                height: 50, // Фиксированная высота
+                                width: double.infinity,
+                                height: 50,
                                 child: ElevatedButton(
                                   style: ElevatedButton.styleFrom(
                                     backgroundColor: Color(0xFF6B2415),

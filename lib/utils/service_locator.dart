@@ -5,5 +5,4 @@ final getIt = GetIt.instance;
 
 void setupServiceLocator() {
   getIt.registerSingleton<TokenService>(TokenService());
-  // getIt.registerLazySingleton<TokenService>(() => TokenService());
 }

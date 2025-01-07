@@ -27,18 +27,15 @@ class TicketPage extends StatefulWidget {
   /// Готовый виджет с изображением, если уже создан
   final Image? performanceImageWidget;
 
-  /// Данные изображения в памяти (ByteData/Uint8List), если загружены из сети или др. источника
+  /// Данные изображения в памяти
   final Uint8List? performanceImageData;
 
   const TicketPage({
     Key? key,
-    // Можно указать required, если всегда нужно передавать
     this.performanceTitle = "Спектакль «Театр: люблю и ненавижу»",
-    // this.performanceImagePath = "assets/images/not_found.png",
     this.dateTimePlace = "24 мая, 19:30\nКреативный кластер «Л52»\nпр. Ленина, 52",
     this.ticketNumber = "WNWSF6L",
 
-    // Значения по умолчанию:
     this.isPaid = false,
     this.isBookedFirstStep = true,
     this.isVisibleButton = true,
@@ -53,7 +50,6 @@ class TicketPage extends StatefulWidget {
 }
 
 class _TicketPageState extends State<TicketPage> {
-  // Локальные переменные состояния, которые можно менять
   late bool isPaid;
   late bool isBookedFirstStep;
   late bool isVisibleButton;
@@ -62,7 +58,6 @@ class _TicketPageState extends State<TicketPage> {
   @override
   void initState() {
     super.initState();
-    // Инициализируем локальные переменные из свойств виджета
     isPaid = widget.isPaid;
     isBookedFirstStep = widget.isBookedFirstStep;
     isVisibleButton = widget.isVisibleButton;
@@ -71,7 +66,6 @@ class _TicketPageState extends State<TicketPage> {
 
   /// Метод, который возвращает нужное изображение (или заглушку)
   Widget _buildPerformanceImage() {
-    // 1) Если есть готовый виджет (Image), то используем его
     if (widget.performanceImageWidget != null) {
       return ClipRRect(
         borderRadius: BorderRadius.circular(8.0),
@@ -79,7 +73,6 @@ class _TicketPageState extends State<TicketPage> {
       );
     }
 
-    // 2) Если есть данные изображения (Uint8List), то отображаем их
     if (widget.performanceImageData != null) {
       return ClipRRect(
         borderRadius: BorderRadius.circular(8.0),
@@ -92,7 +85,6 @@ class _TicketPageState extends State<TicketPage> {
       );
     }
 
-    // 3) Иначе показываем заглушку из ассетов
     return ClipRRect(
       borderRadius: BorderRadius.circular(8.0),
       child: Image.asset(
@@ -107,11 +99,8 @@ class _TicketPageState extends State<TicketPage> {
   /// Метод, который будет менять состояние.
   void _isBookedFirstStepToggle() {
     setState(() {
-      // Пример логики: если ещё была бронь, переключаем на "билет куплен" и т.д.
       if (isBookedFirstStep) {
         isBookedFirstStep = false;
-        // Например, тут же можно включить isPaid = true, если нужно
-        // isPaid = true;
       }
     });
   }
@@ -158,7 +147,6 @@ class _TicketPageState extends State<TicketPage> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          // Надпись "Билет" или "Код брони"
           Text(
             isPaid ? "Билет" : "Код брони",
             style: const TextStyle(
@@ -168,7 +156,7 @@ class _TicketPageState extends State<TicketPage> {
               fontFamily: "Roboto",
             ),
           ),
-          // Номер билета
+
           Text(
             widget.ticketNumber,
             style: TextStyle(
@@ -183,18 +171,18 @@ class _TicketPageState extends State<TicketPage> {
           Center(
             child: Container(
               decoration: BoxDecoration(
-                color: Colors.white, // Цвет фона под QR-кодом
-                borderRadius: BorderRadius.circular(10.0), // Закругление углов
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(10.0),
                 boxShadow: [
                   BoxShadow(
-                    color: Colors.grey.withOpacity(0.5), // Цвет тени
+                    color: Colors.grey.withOpacity(0.5),
                     spreadRadius: 2,
                     blurRadius: 5,
-                    offset: const Offset(0, 3), // Смещение тени
+                    offset: const Offset(0, 3),
                   ),
                 ],
               ),
-              padding: const EdgeInsets.all(4.0), // Отступы вокруг QR-кода
+              padding: const EdgeInsets.all(4.0),
               child: QrImageView(
                 data: widget.ticketNumber,
                 version: QrVersions.auto,
@@ -261,7 +249,6 @@ class _TicketPageState extends State<TicketPage> {
               Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  // Используем метод для вывода изображения
                   _buildPerformanceImage(),
                   const SizedBox(width: 16),
 
