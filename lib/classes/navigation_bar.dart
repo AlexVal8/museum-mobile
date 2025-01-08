@@ -5,6 +5,8 @@ import 'package:flutter_svg/svg.dart';
 import 'package:museum/pages/home_page.dart';
 import 'package:museum/pages/statWeek.dart';
 
+import '../pages/create_event_page.dart';
+import '../pages/events_created_page.dart';
 import '../pages/floor_plan_page.dart';
 import '../pages/histories.dart';
 import '../pages/presentation.dart';
@@ -126,7 +128,7 @@ class _CustomBottomNavigationBarState extends State<CustomBottomNavigationBar> {
       case 1:
         return FloorPlanPage();
       case 2:
-        return StatWeek();
+        return EventsCreatedPage();
       case 3:
         return Rules();
       default:
