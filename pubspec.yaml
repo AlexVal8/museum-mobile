@@ -46,9 +46,11 @@ dependencies:
   flutter_map_marker_popup: ^6.1.2
   fl_chart: ^0.68.0
   http: ^1.2.1
+  http_parser: ^4.0.0
   flutter_secure_storage: ^8.0.0
   get_it: ^8.0.3
   qr_flutter: ^4.1.0
+  image_picker: ^0.8.6
 
 dev_dependencies:
   flutter_test:
