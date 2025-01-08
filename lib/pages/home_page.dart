@@ -30,13 +30,14 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
-    _startTokenRefreshTimer();
+    authService.stopTokenRefreshTimer();
     _loadEvents();
   }
 
   @override
   void dispose() {
     _timer?.cancel();
+    authService.stopTokenRefreshTimer();
     super.dispose();
   }
 
