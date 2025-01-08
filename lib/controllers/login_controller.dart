@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
@@ -9,6 +10,22 @@ import 'package:http/http.dart' as http;
 
 class AuthService {
   final FlutterSecureStorage storage = const FlutterSecureStorage();
+
+  Timer? _tokenRefreshTimer;
+
+  void startTokenRefreshTimer() {
+    _tokenRefreshTimer = Timer.periodic(Duration(minutes: 2), (timer) async {
+      await refreshAccessToken();
+    });
+    print('Таймер обновления токена запущен');
+  }
+
+  void stopTokenRefreshTimer() {
+    _tokenRefreshTimer?.cancel();
+    _tokenRefreshTimer = null;
+    print('Таймер обновления токена остановлен');
+  }
+
 
   Future<void> loginUser(BuildContext context, final email, final password) async {
     final response = await http.post(
