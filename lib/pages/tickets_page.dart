@@ -108,13 +108,13 @@ class _TicketsPageState extends State<TicketsPage>
           _EventCard(
             title: '«Театр: люблю и ненавижу»',
             dateTime: '24 мая, 19:30',
-            imageUrl: 'https://via.placeholder.com/120x80?text=Theater',
+            imageUrl: 'https://p1.zoon.ru/preview/2JaRcOS3cfcDFfcdqkJmWA/630x384x85/0/2/7/52c08dcf40c0886b7c8e2c57_57e8378fdb2d4.jpg',
           ),
           const SizedBox(height: 16),
           _EventCard(
             title: '«Резо» (12+)',
             dateTime: '2 апреля, 19:00',
-            imageUrl: 'https://via.placeholder.com/120x80?text=Rezo',
+            imageUrl: 'https://cdnn1.img.sputnik-georgia.com/img/07e7/06/07/278352201_0:319:1536:1855_1920x0_80_0_0_e58e704916455d512d299b7376c27b14.jpg',
           ),
         ],
       ),

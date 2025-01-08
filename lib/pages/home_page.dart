@@ -24,6 +24,11 @@ class _HomePageState extends State<HomePage> {
   final EventsService eventsService = EventsService();
   final FlutterSecureStorage storage = const FlutterSecureStorage();
 
+  String _searchQuery = '';
+  List<dynamic>? _filteredEvents;
+  final TextEditingController _searchController = TextEditingController();
+
+
   Timer? _timer;
   List<dynamic>? events;
 
@@ -70,9 +75,24 @@ class _HomePageState extends State<HomePage> {
       if (result != null) {
         setState(() {
           events = result;
+          _filteredEvents = result;
         });
       }
     }
+  }
+
+  void _filterEvents(String query) {
+    setState(() {
+      _searchQuery = query;
+      if (query.isEmpty) {
+        _filteredEvents = events;
+      } else {
+        _filteredEvents = events?.where((event) {
+          final name = event['name']?.toLowerCase() ?? '';
+          return name.contains(query.toLowerCase());
+        }).toList();
+      }
+    });
   }
 
   Future<Map<String, dynamic>?> _fetchEventWithRetry(String token, int eventId) async {
@@ -116,8 +136,11 @@ class _HomePageState extends State<HomePage> {
           ),
           SizedBox(height: 16),
           MyTextField(
-            controller: TextEditingController(),
+            controller: _searchController,
             readOnly: false,
+            onChanged: (value) {
+              _filterEvents(value);
+            },
             suffixIcon: const Icon(Icons.search, color: Color(0xff49454F)),
             hintText: 'Поиск',
             obscureText: false,
@@ -125,12 +148,12 @@ class _HomePageState extends State<HomePage> {
           ),
           SizedBox(height: 16),
           Expanded(
-            child: events == null
+            child: _filteredEvents == null
                 ? Center(child: CircularProgressIndicator())
                 : ListView.builder(
-              itemCount: events!.length,
+              itemCount: _filteredEvents!.length,
               itemBuilder: (context, index) {
-                var event = events![index];
+                var event = _filteredEvents![index];
                 String? imageId = event['image']?['link']?.split('/').last;
                 int eventId = event['id'];
 

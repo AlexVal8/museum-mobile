@@ -184,7 +184,7 @@ final List<String> description = ["Погружение в историю гор
       TextButton(onPressed: () async
       {
         await _sendRequest();
-        Navigator.push(context, MaterialPageRoute(builder: (context) => CustomBottomNavigationBar()));},
+        Navigator.push(context, MaterialPageRoute(builder: (context) => CustomBottomNavigationBar(isAdmin: false,)));},
       style: TextButton.styleFrom(backgroundColor: counter == 0?disableButton:enableButton,
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15))),
         child: Text(counter == 0?"Позже" :"Сохранить выбор", style: TextStyle(color: Colors.white),),

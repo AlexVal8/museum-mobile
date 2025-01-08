@@ -3,6 +3,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:museum/pages/login_register_page.dart';
 
 import '../classes/navigation_bar.dart';
@@ -49,12 +50,17 @@ class AuthService {
 
       print(storage.read(key: 'access_token'));
       print(storage.read(key: 'refresh_token'));
+
+      final decodedToken = JwtDecoder.decode(access_token);
+      final List<dynamic> roles = decodedToken['realm_access']['roles'] ?? [];
+      final bool isAdmin = roles.contains('ROLE_ADMIN');
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Вход успешен')),
       );
+
       await Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) => CustomBottomNavigationBar()),
+        MaterialPageRoute(builder: (context) => CustomBottomNavigationBar(isAdmin: isAdmin,)),
       );
     } else {
       ScaffoldMessenger.of(context).showSnackBar(

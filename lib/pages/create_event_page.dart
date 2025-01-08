@@ -20,12 +20,20 @@ class CreateEventPage extends StatefulWidget {
 
 class _CreateEventPageState extends State<CreateEventPage> {
   bool _isSaving = false;
+  List<Map<String, dynamic>> eventTypes = [];
+  List<Map<String, dynamic>> sites = [];
+  Map<int, bool> _selectedTypes = {};
+  int? _selectedTypeId;
+  int? _selectedSiteId;
+  String? _selectedAgeCategory;
+
 
   final _titleController = TextEditingController();
   final _placeController = TextEditingController();
   final _timeController = TextEditingController();
   final _descriptionController = TextEditingController();
   final _priceController = TextEditingController();
+
 
   final _dayController = TextEditingController();
   final _monthController = TextEditingController();
@@ -41,6 +49,41 @@ class _CreateEventPageState extends State<CreateEventPage> {
 
   final FlutterSecureStorage storage = const FlutterSecureStorage();
   final AuthService authService = AuthService();
+
+  Widget _buildAgeCategorySelector() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text('Возрастная категория', style: TextStyle(fontWeight: FontWeight.bold)),
+        ..._ageCategories.keys.map((key) {
+          return RadioListTile<String>(
+            title: Text(key),
+            value: key,
+            groupValue: _selectedAgeCategory,
+            onChanged: (String? value) {
+              setState(() {
+                _selectedAgeCategory = value;
+
+                if (value == "0+") {
+                  _setAgeSettings(kids: true, teenagers: false, adult: false);
+                } else if (value == "6+" || value == "12+") {
+                  _setAgeSettings(kids: true, teenagers: true, adult: false);
+                } else if (value == "16+" || value == "18+") {
+                  _setAgeSettings(kids: false, teenagers: true, adult: true);
+                }
+              });
+            },
+          );
+        }).toList(),
+      ],
+    );
+  }
+
+  void _setAgeSettings({required bool kids, required bool teenagers, required bool adult}) {
+    setState(() {
+      print("kids: $kids, teenagers: $teenagers, adult: $adult");
+    });
+  }
 
   String? _getFormattedDate() {
     final day = _dayController.text.padLeft(2, '0');
@@ -60,32 +103,12 @@ class _CreateEventPageState extends State<CreateEventPage> {
     return "$day-$month-$year $hour:$minute";
   }
 
-  // Категории
   final Map<String, bool> _ageCategories = {
     "0+": false,
     "6+": false,
     "12+": false,
     "16+": false,
     "18+": false,
-  };
-
-  final Map<String, bool> _genreCategories = {
-    "Экскурсия": false,
-    "Мастер-класс": false,
-    "Спектакль": false,
-    "Выставка": false,
-    "Интерактивное занятие": false,
-    "Музейный урок": false,
-    "Концерт": false,
-    "Мероприятие": false,
-    "Лекция": false,
-    "Творческая встреча": false,
-    "Фестиваль": false,
-    "Артист-ток": false,
-    "Паблик-ток": false,
-    "Кинопоказы": false,
-    "Public talk": false,
-    "Бал": false,
   };
 
   final Map<String, bool> _options = {
@@ -115,17 +138,17 @@ class _CreateEventPageState extends State<CreateEventPage> {
       _priceController.text = widget.eventData!['price'] ?? '';
       _pushkinCardPayment = widget.eventData!['pushkinCardPayment'] ?? false;
       _freeEntry = widget.eventData!['freeEntry'] ?? false;
+      _selectedSiteId = widget.eventData!['siteId'];
 
-      // Загружаем состояния чекбоксов категорий
       if (widget.eventData!['ageCategories'] != null) {
         for (var key in widget.eventData!['ageCategories'].keys) {
           _ageCategories[key] = widget.eventData!['ageCategories'][key];
         }
       }
 
-      if (widget.eventData!['genreCategories'] != null) {
-        for (var key in widget.eventData!['genreCategories'].keys) {
-          _genreCategories[key] = widget.eventData!['genreCategories'][key];
+      if (widget.eventData != null) {
+        if (widget.eventData!['typeOfEventId'] != null) {
+          _selectedTypes[widget.eventData!['typeOfEventId']] = true;
         }
       }
 
@@ -135,10 +158,22 @@ class _CreateEventPageState extends State<CreateEventPage> {
         }
       }
 
-      if (widget.eventData!['images'] != null) {
-        _images.addAll(widget.eventData!['images'].cast<File>());
+      if (widget.eventData?['images'] != null) {
+        _images.addAll(widget.eventData!['images'].map<String>((image) {
+          if (image is Map<String, dynamic> && image.containsKey('link') && image['link'] is String) {
+            final baseUrl = 'https://museum.waranim.xyz'; // Базовый URL для изображений
+            return '$baseUrl${image['link']}'; // Формирование полного URL
+          } else {
+            print("Неверный формат изображения: $image");
+            throw Exception("Неверный формат изображения");
+          }
+        }).toList());
       }
+
     }
+
+      _fetchEventTypes();
+    _fetchSites();
 
     _authService.startTokenRefreshTimer();
   }
@@ -148,6 +183,57 @@ class _CreateEventPageState extends State<CreateEventPage> {
     _authService.stopTokenRefreshTimer();
     super.dispose();
   }
+
+  Future<void> _fetchSites() async {
+    try {
+      final token = await _getToken();
+      if (token == null) throw Exception('Токен отсутствует.');
+
+      final response = await http.get(
+        Uri.parse('https://museum.waranim.xyz/api/sites'),
+        headers: {'Authorization': 'Bearer $token'},
+      );
+
+      if (response.statusCode == 200) {
+        final List<dynamic> sitesData = jsonDecode(utf8.decode(response.bodyBytes));
+        setState(() {
+          sites = sitesData.map((e) => Map<String, dynamic>.from(e)).toList();
+        });
+      } else {
+        throw Exception('Ошибка загрузки площадок: ${response.statusCode}');
+      }
+    } catch (e) {
+      print(e);
+    }
+  }
+
+  Future<void> _fetchEventTypes() async {
+    try {
+      final token = await _getToken();
+      if (token == null) throw Exception('Токен отсутствует.');
+
+      final response = await http.get(
+        Uri.parse('https://museum.waranim.xyz/api/types-of-event'),
+        headers: {'Authorization': 'Bearer $token'},
+      );
+
+      if (response.statusCode == 200) {
+        final List<dynamic> typesData = jsonDecode(utf8.decode(response.bodyBytes));
+        setState(() {
+          eventTypes = typesData.map((e) => Map<String, dynamic>.from(e)).toList();
+          _selectedTypes = {
+            for (var type in eventTypes) type['id']: false,
+          };
+        });
+
+      } else {
+        throw Exception('Ошибка загрузки типов мероприятий: ${response.statusCode}');
+      }
+    } catch (e) {
+      print(e);
+    }
+  }
+
 
   Future<void> _pickImage() async {
     final picker = ImagePicker();
@@ -160,18 +246,60 @@ class _CreateEventPageState extends State<CreateEventPage> {
   }
 
   void _saveEvent() async {
-    if (_isSaving) return; // Если сохранение уже выполняется, ничего не делаем
+    if (_isSaving) return;
 
     setState(() {
-      _isSaving = true; // Устанавливаем флаг
+      _isSaving = true;
     });
 
     try {
+      // Устанавливаем значения для возрастных ограничений
+      bool kids = false;
+      bool teenagers = false;
+      bool adult = false;
+
+      int age = 0;
+
+      switch (_selectedAgeCategory) {
+        case "0+":
+          kids = true;
+          teenagers = false;
+          adult = false;
+          age = 0;
+          break;
+        case "6+":
+          kids = true;
+          teenagers = true;
+          adult = false;
+          age = 6;
+          break;
+        case "12+":
+          kids = true;
+          teenagers = true;
+          adult = false;
+          age = 12;
+          break;
+        case "16+":
+          kids = false;
+          teenagers = true;
+          adult = true;
+          age = 16;
+          break;
+        case "18+":
+          kids = false;
+          teenagers = true;
+          adult = true;
+          age = 18;
+          break;
+        default:
+          throw Exception("Возрастная категория не выбрана.");
+      }
+
       final eventJson = jsonEncode({
         "hia": true,
-        "siteId": 52,
-        "typeOfEventId": 3,
-        "teenagers": true,
+        "siteId": _selectedSiteId,
+        "typeOfEventId": _selectedTypeId,
+        "teenagers": teenagers,
         "bookingTime": {
           "days": 0,
           "hours": 0,
@@ -181,18 +309,18 @@ class _CreateEventPageState extends State<CreateEventPage> {
         "prices": [
           {
             "price": int.tryParse(_priceController.text.trim()) ?? 0,
-            "age": 0,
+            "age": age,
           }
         ],
         "name": _titleController.text.trim(),
-        "kids": true,
+        "kids": kids,
         "date": _formattedDate,
         "bookingAllowed": true,
         "duration": 0,
-        "adult": true,
+        "adult": adult,
         "description": _descriptionController.text.trim(),
-        "age": 0,
-        "kassir": "kassir_example",
+        "age": age,
+        "kassir": "kassir",
       });
 
       final token = await _getToken();
@@ -291,6 +419,32 @@ class _CreateEventPageState extends State<CreateEventPage> {
         height: 80,
         fit: BoxFit.cover,
       ),
+    );
+  }
+
+  Widget _buildSiteDropdown() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text('Площадка', style: TextStyle(fontWeight: FontWeight.bold)),
+        SizedBox(height: 8),
+        DropdownButton<int>(
+          value: _selectedSiteId,
+          isExpanded: true,
+          items: sites.map((site) {
+            return DropdownMenuItem<int>(
+              value: site['id'],
+              child: Text(site['name'] ?? 'Неизвестная площадка'),
+            );
+          }).toList(),
+          onChanged: (int? newValue) {
+            setState(() {
+              _selectedSiteId = newValue;
+            });
+          },
+          hint: Text('Выберите площадку'),
+        ),
+      ],
     );
   }
 
@@ -453,6 +607,28 @@ class _CreateEventPageState extends State<CreateEventPage> {
     return regex.hasMatch(date);
   }
 
+  Widget _buildTypeCheckboxes() {
+    return Column(
+      children: eventTypes.map((type) {
+        final typeId = type['id'];
+        final typeName = type['name'] ?? 'Неизвестный тип';
+
+        return RadioListTile<int>(
+          title: Text(typeName),
+          value: typeId,
+          groupValue: _selectedTypeId,
+          onChanged: (int? newValue) {
+            setState(() {
+              _selectedTypeId = newValue;
+            });
+          },
+          controlAffinity: ListTileControlAffinity.leading,
+        );
+      }).toList(),
+    );
+  }
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -475,13 +651,7 @@ class _CreateEventPageState extends State<CreateEventPage> {
             SizedBox(height: 16),
 
             // Место проведения
-            TextField(
-              controller: _placeController,
-              decoration: InputDecoration(
-                labelText: 'Место',
-                border: OutlineInputBorder(),
-              ),
-            ),
+            _buildSiteDropdown(),
             SizedBox(height: 16),
 
             // Время проведения
@@ -525,14 +695,16 @@ class _CreateEventPageState extends State<CreateEventPage> {
             ),
             SizedBox(height: 16),
 
+            SizedBox(height: 16),
+
             SizedBox(height: 8),
-            ..._ageCategories.keys.map((key) => _buildCheckbox(key, _ageCategories)).toList(),
+            _buildAgeCategorySelector(),
             SizedBox(height: 16),
 
             // Жанры
-            Text('Жанры', style: TextStyle(fontWeight: FontWeight.bold)),
+            Text('Типы мероприятий', style: TextStyle(fontWeight: FontWeight.bold)),
             SizedBox(height: 8),
-            ..._genreCategories.keys.map((key) => _buildCheckbox(key, _genreCategories)).toList(),
+            _buildTypeCheckboxes(),
             SizedBox(height: 16),
 
             // Инклюзивность

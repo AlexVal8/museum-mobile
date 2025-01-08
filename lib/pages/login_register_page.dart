@@ -18,6 +18,7 @@ class LoginRegisterPage extends StatelessWidget {
                   padding: const EdgeInsets.all(40.0),
                   child: Column(
                     children: [
+                      SizedBox(height: 40,),
                       SvgPicture.asset(
                         "assets/icons/logo_vector.svg",
                         width: 295,
@@ -75,7 +76,7 @@ class LoginRegisterPage extends StatelessWidget {
                           ),
                         ),
                       ),
-                      const SizedBox(height: 100,)
+                      const SizedBox(height: 200,)
                     ],
                   ),
                 ),
